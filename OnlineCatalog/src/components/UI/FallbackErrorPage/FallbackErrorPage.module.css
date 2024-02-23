@@ -1,0 +1,20 @@
+.fallbackerrorpage {
+  
+}
+
+.bgPage {
+    /* background: radial-gradient(circle, #EB3E59 0%, #3D93CD 100%) */
+
+
+background: linear-gradient(to bottom right, #EB3E59 0%, #3D93CD 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EB3E59', endColorstr='#3D93CD',GradientType=1 );
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 20px;
+    color: #fff;
+    text-align: center;
+
+}
