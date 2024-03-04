@@ -10,6 +10,8 @@ const CardItem = ({ item, dueDate = null }) => {
   const { cart, add, dataHeader, handleOpenModalCart } = useCartContext();
 
   const itemInCart = cart.find((i) => i.codFabrica === item.codFabrica);
+  // pasar a entero el precio redondeado
+  item.precioVenta = Math.round(item.precioVenta);
 
   return (
     <div className="border-black border-2 p-4 px-0 flex my-4 flex-col md:flex-row md:pl-4">
@@ -27,7 +29,7 @@ const CardItem = ({ item, dueDate = null }) => {
         <h3 className="w-full h-auto bg-zinc-400 p-2 mb-2 uppercase text-white text-xs md:text-base">
           Rubro: <span className="font-black">{item.rubro} </span>
           <span>{" // "}</span>
-          Sububro: <span className="font-bold"> {item.subRubro}</span>
+          Subrubro: <span className="font-bold"> {item.subRubro}</span>
         </h3>
         {/* aqui va un sumador para el pedido y un btn */}
         {/* {dueDate != null &&
@@ -60,12 +62,12 @@ const CardItem = ({ item, dueDate = null }) => {
                 //   </button>
                 // </div>
                 <div className="bg-green-600 p-4 w-fit font-black text-white uppercase">
-                  Agregado
+                  Producto agregado
                 </div>
               ) : (
                 <button
                   type="button"
-                  className="bg-black text-white w-fit py-2 mt-3 px-5 rounded-xl font-bold text-sm"
+                  className="bg-black hover:bg-neutral-700 text-white w-fit py-2 mt-3 px-5 rounded-xl font-bold text-sm"
                   onClick={() => {
                     add(item);
                     handleOpenModalCart();
@@ -85,7 +87,7 @@ const CardItem = ({ item, dueDate = null }) => {
               </p>
             </div>
             <p className="text-2xl font-bold bg-black text-center px-5 py-1 text-white">
-              ${item.precioVenta}
+              ${Math.round(item.precioVenta)}
             </p>
           </div>
         </div>

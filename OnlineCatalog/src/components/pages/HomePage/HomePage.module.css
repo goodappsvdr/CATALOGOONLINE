@@ -14,3 +14,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EB3E59', end
     text-align: center;
 
 }
+
+/* una clase que centre top 1/2 right 1/2 trans */
+.center_Absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

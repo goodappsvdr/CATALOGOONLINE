@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
+import ErrorBoundaryIcon from "../Icons/ErrorBoundaryIcon/ErrorBoundaryIcon";
+// eslint-disable-next-line no-unused-vars
 import styles from "./FallbackErrorPage.module.css";
 
 const FallbackErrorPage = ({ error }) => {
   return (
-    <section className={` ${styles.bgPage}`}>
-      <div className="h-screen w-full flex flex-1 items-center flex-col justify-center">
-        <h1 className="font-bold text-2xl md:text-5xl pb-3">{error.message}</h1>
-        <p className="md:text-xl pb-4">
-          Puede que se trate de un error o que este catálogo no exista.
-        </p>
-        <p className="md:text-xl pb-6">Por favor, inténtelo nuevamente.</p>
-      </div>
+    <section className="w-full flex flex-col items-center h-full justify-center">
+      <ErrorBoundaryIcon className="max-w-40 w-full" />
+      <h1 className="w-full text-3xl font-black text-center pt-6">
+        Lo sentimos!
+      </h1>
+      <p className="w-full text-xl text-center">{error.message}</p>
     </section>
   );
 };

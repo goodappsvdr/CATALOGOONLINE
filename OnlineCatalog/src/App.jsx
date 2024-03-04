@@ -31,7 +31,7 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <Routing />
             <Toaster
-              position="bottom-right"
+              position="top-left"
               // expand="true"
               visibleToasts={3}
               closeButton

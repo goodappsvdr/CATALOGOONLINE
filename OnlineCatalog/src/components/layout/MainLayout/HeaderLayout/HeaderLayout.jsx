@@ -8,7 +8,6 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import CopyToClipboard from "react-copy-to-clipboard";
-import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
 import {
   // WhatsappShareButton,
   // TwitterShareButton,
@@ -19,7 +18,9 @@ import {
 } from "react-share";
 import { toast } from "sonner";
 import { useCartContext } from "../../../../context/CartContext/CartContext";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import WhatsAppIcon from "../../../UI/Icons/WhatsAppIcon/WhatsAppIcon";
+import CartIcon from "../../../UI/Icons/CartIcon/CartIcon";
+import SharedIcon from "../../../UI/Icons/SharedIcon/SharedIcon";
 
 const HeaderLayout = ({ setSearchParams, searchParams }) => {
   const search = searchParams.get("search");
@@ -29,7 +30,7 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
   const currentUrl = window.location.href;
 
   const shareOnWhatsApp = () => {
-    var textToShare = "Hola, te comparto este catalogo";
+    var textToShare = "Hola! Te comparto este catálogo";
     var encodedText = encodeURIComponent(textToShare);
     var encodedUrl = encodeURIComponent(currentUrl);
     var whatsappShareLink =
@@ -48,6 +49,7 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
   //   window.open(`https://twitter.com/intent/tweet?url=${currentUrl}`, "_blank");
   // };
 
+  console.log(dataHeader);
   return (
     <AppBar position="fixed" className="pt-4 lg:py-4" sx={{ bgcolor: "#FFF" }}>
       <Container maxWidth="lg">
@@ -62,13 +64,15 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                   src={dataHeader.image}
                   alt={"Logo de" + dataHeader.title}
                   className="h-20 hidden lg:flex mr-6"
+                  onClick={() => {
+                    window.location.href = `/${dataHeader.id}`;
+                  }}
                 />
                 <h1 className="text-black text-2xl font-bold hidden lg:flex">
                   {dataHeader != null && dataHeader.title}
                 </h1>
               </div>
               <TextField
-                input
                 className="flex-1"
                 InputProps={{
                   sx: {
@@ -87,25 +91,21 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                 variant="filled"
                 color={"primary"}
                 size="small"
-                value={search}
+                value={search && search !== "undefined" ? search : ""}
                 onChange={(e) => setSearchParams({ search: e.target.value })}
               />
               <div className="hidden lg:flex flex-col">
-                <div className="flex">
-                  <p className="text-black font-bold pr-1">Télefono:</p>
-                  <a
-                    href={
-                      dataHeader != null &&
-                      `https://wa.me/${dataHeader.phone}?text=Hola%20quiero%20hacer%20un%20pedido`
+                <p className="text-black text-xl">
+                  <span
+                    className={
+                      new Date(
+                        new Date(dataHeader.date).getTime() +
+                          20 * 24 * 60 * 60 * 1000
+                      ).toISOString() > new Date().toISOString()
+                        ? "text-black font-bold"
+                        : "text-red-500 font-bold"
                     }
-                    className="text-black  flex items-end border-b-2 gap-1 border-b-black"
                   >
-                    {dataHeader != null && dataHeader.phone}
-                    <PermPhoneMsgIcon fontSize="small" />
-                  </a>
-                </div>
-                <p className="text-black">
-                  <span className="text-black font-bold">
                     Precios vigentes hasta:{" "}
                   </span>
                   {dataHeader != null &&
@@ -134,24 +134,25 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                 </p>
                 <div className="flex gap-2">
                   <button
-                    className="bg-neutral-500 text-white font-bold py-1 px-2 rounded-md w-full flex justify-center items-center gap-1"
+                    className="bg-neutral-500 hover:bg-neutral-400 text-white font-bold py-1 px-2 rounded-md w-full flex justify-center items-center gap-1"
                     type="button"
                     onClick={() => {
                       handleOpenModalCart();
                     }}
                   >
                     <p>Ver pedido</p>
-                    <ShoppingCartIcon fontSize="small" className="m-0 p-0" />
+                    <CartIcon className="h-5" />
                   </button>
                   <div className="flex items-center w-full">
                     <button
                       type="button"
-                      className="bg-neutral-800 text-white font-bold py-1 px-2 rounded-md w-full relative"
+                      className="bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-2 px-2 rounded-md w-full flex justify-center items-center gap-1 relative"
                       onClick={() => setShare(!share)}
                     >
                       Compartir
+                      <SharedIcon className="h-5" />
                       {share && (
-                        <div className="absolute top-[40px] flex z-10 p-4 gap-4 left-[calc(50%-85px)] bg-black rounded-md">
+                        <div className="absolute top-[48px] flex z-10 p-4 gap-4 left-[calc(50%-85px)] bg-black rounded-md cursor-auto">
                           <button
                             className="p-0 bg-transparent"
                             type="button"
@@ -184,12 +185,23 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                             <ContentCopyRoundedIcon
                               style={{ cursor: "pointer" }}
                               fontSize="large"
+                              className="bg-white text-black hover:text-neutral-500 hover:text rounded-md p-1"
                             />
                           </CopyToClipboard>
                         </div>
                       )}
                     </button>
                   </div>
+                  <a
+                    href={
+                      dataHeader != null &&
+                      `https://wa.me/${dataHeader.phone}?text=Hola!%20Quiero%20hacer%20una%20consulta%20sobre%20el%20catálogo`
+                    }
+                    className="p-1 rounded-lg bg-green-600 hover:bg-green-500"
+                  >
+                    {/* {dataHeader != null && dataHeader.phone} */}
+                    <WhatsAppIcon className="h-8 p-1" />
+                  </a>
                 </div>
               </div>
             </>
@@ -201,12 +213,14 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                   src={dataHeader != null && dataHeader.image}
                   alt="logo"
                   className="h-20 flex lg:hidden"
+                  onClick={() => {
+                    window.location.href = `/${dataHeader.id}`;
+                  }}
                 />
                 <h1 className="text-black text-2xl font-bold text-center py-2">
                   {dataHeader != null && dataHeader.title}
                 </h1>
                 <TextField
-                  input
                   className="w-full"
                   InputProps={{
                     sx: {
@@ -229,12 +243,12 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                   variant="filled"
                   color={"primary"}
                   size="small"
-                  value={search}
+                  value={search && search !== "undefined" ? search : ""}
                   onChange={(e) => setSearchParams({ search: e.target.value })}
                 />
 
                 <div className="flex lg:hidden flex-col items-center mt-3 w-full">
-                  <div className="bg-[#DADADA] w-screen px-6 sm:px-8 py-2">
+                  {/* <div className="bg-[#DADADA] w-screen px-6 sm:px-8 py-2">
                     <div className="flex items-center">
                       <p className="text-black font-bold text-sm pr-1">
                         Télefono:{" "}
@@ -253,12 +267,20 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                         />
                       </a>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="bg-[#CECECE] w-screen px-6 sm:px-8 py-2">
                     <div className="flex items-center">
                       <p className="text-black text-sm">
-                        <span className="text-black font-bold text-sm">
-                          {" "}
+                        <span
+                          className={
+                            new Date(
+                              new Date(dataHeader.date).getTime() +
+                                20 * 24 * 60 * 60 * 1000
+                            ).toISOString() > new Date().toISOString()
+                              ? "text-black font-bold"
+                              : "text-red-500 font-bold"
+                          }
+                        >
                           Precios vigentes hasta:{" "}
                         </span>
                         {dataHeader != null &&
@@ -287,30 +309,29 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-[#bdbdbd] w-screen px-6 sm:px-8 py-2">
+                  <div className="w-screen px-6 sm:px-8 py-2">
+                    {/* <div className="bg-[#bdbdbd] w-screen px-6 sm:px-8 py-2"> */}
                     <div className="flex gap-2">
                       <button
-                        className="bg-neutral-500 text-white font-bold py-1 px-2 rounded-md w-full flex justify-center items-center gap-1"
+                        className="bg-neutral-500 hover:bg-neutral-400 text-white font-bold py-1 px-2 rounded-md w-full flex justify-center items-center gap-1"
                         type="button"
                         onClick={() => {
                           handleOpenModalCart();
                         }}
                       >
                         <p>Ver pedido</p>
-                        <ShoppingCartIcon
-                          fontSize="small"
-                          className="m-0 p-0"
-                        />
+                        <CartIcon className="h-5" />
                       </button>
                       <div className="flex items-center w-full">
                         <button
                           type="button"
-                          className="bg-neutral-800 text-white font-bold py-1 px-2 rounded-md w-full relative"
+                          className="bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-2 px-2 rounded-md w-full flex justify-center items-center gap-2 relative"
                           onClick={() => setShare(!share)}
                         >
                           Compartir
+                          <SharedIcon className="h-5" />
                           {share && (
-                            <div className="absolute top-[40px] flex z-10 p-4 gap-4 left-[calc(50%-85px)] bg-black rounded-md">
+                            <div className="absolute top-[48px] flex z-10 p-4 gap-4 left-[calc(50%-85px)] bg-black rounded-md cursor-auto">
                               <button
                                 className="p-0 bg-transparent"
                                 type="button"
@@ -343,12 +364,23 @@ const HeaderLayout = ({ setSearchParams, searchParams }) => {
                                 <ContentCopyRoundedIcon
                                   style={{ cursor: "pointer" }}
                                   fontSize="large"
+                                  className="bg-white text-black hover:text-neutral-500 hover:text rounded-md p-1"
                                 />
                               </CopyToClipboard>
                             </div>
                           )}
                         </button>
                       </div>
+                      <a
+                        href={
+                          dataHeader != null &&
+                          `https://wa.me/${dataHeader.phone}?text=Hola!%20Quiero%20hacer%20una%20consulta%20sobre%20el%20catálogo`
+                        }
+                        className="p-1 rounded-lg bg-green-600 hover:bg-green-500"
+                      >
+                        {/* {dataHeader != null && dataHeader.phone} */}
+                        <WhatsAppIcon className="h-8 p-1" />
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -19,27 +19,45 @@ export const CartProvider = ({ children }) => {
 
   const add = (product) => {
     const productInCartIndex = cart.findIndex((item) => item.id === product.id);
+    if (productInCartIndex >= 0) {
+      const newCart = structuredClone(cart);
+      if (newCart[productInCartIndex].cantidad < 99) {
+        newCart[productInCartIndex].cantidad =
+          parseInt(newCart[productInCartIndex].cantidad) + 1;
+        // toast.info("Agregado", {
+        //   description: "Correc agregado al pedido",
+        //   duration: 3000,
+        // });
+        return setCart(newCart);
+      }
+      // toast.error("No se puede agregar", {
+      //   description: "No se puede agregar mas de 99 unidades",
+      //   duration: 3000,
+      // });
+    }
+    if (productInCartIndex < 0) {
+      toast.info("Agregado", {
+        description: "Artículo agregado al pedido",
+        duration: 3000,
+      });
+      setCart((prevState) => [
+        ...prevState,
+        {
+          ...product,
+          cantidad: 1,
+        },
+      ]);
+    }
+  };
+
+  const addQuantity = (product, quantity) => {
+    const productInCartIndex = cart.findIndex((item) => item.id === product.id);
 
     if (productInCartIndex >= 0) {
       const newCart = structuredClone(cart);
-      newCart[productInCartIndex].cantidad += 1;
-      // toast.info("Agregado", {
-      //   description: "Correc agregado al pedido",
-      //   duration: 3000,
-      // });
+      newCart[productInCartIndex].cantidad = quantity;
       return setCart(newCart);
     }
-    toast.info("Agregado", {
-      description: "Artículo agregado al pedido",
-      duration: 3000,
-    });
-    setCart((prevState) => [
-      ...prevState,
-      {
-        ...product,
-        cantidad: 1,
-      },
-    ]);
   };
 
   const remove = (product) => {
@@ -148,6 +166,7 @@ export const CartProvider = ({ children }) => {
         clientData,
         saveClientData,
         getClientData,
+        addQuantity,
       }}
     >
       {children}

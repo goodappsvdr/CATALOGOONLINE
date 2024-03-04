@@ -8,15 +8,17 @@ const MainLayout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
-    <CartProvider>
-      <div className={`${styles.mainlayout}`}>
-        <HeaderLayout
-          setSearchParams={setSearchParams}
-          searchParams={searchParams}
-        />
-        <MainPage searchParams={searchParams} />
-      </div>
-    </CartProvider>
+    <div className="h-full pt-[19rem] lg:pt-28 relative">
+      <CartProvider>
+        <div className={`${styles.mainlayout} h-full`}>
+          <HeaderLayout
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+          />
+          <MainPage searchParams={searchParams} />
+        </div>
+      </CartProvider>
+    </div>
   );
 };
 

@@ -26,21 +26,17 @@ const MainPage = ({ searchParams }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="flex justify-end items-start h-screen w-screen bg-black bg-opacity-80"
-        // className="flex justify-center items-center h-screen w-screen p-5 bg-black bg-opacity-80"
       >
-        {/* <div className="flex align-middle h-full max-h-full w-full max-w-6xl"> */}
-        <div className="flex align-middle h-full max-h-full w-full max-w-lg">
+        <div className="flex align-middle h-full max-h-full w-full md:max-w-lg">
           <CartProducts />
         </div>
       </Modal>
 
       <Suspense fallback={<ScreenLoader />}>
         <div
-          className={`${styles.mainpage} max-w-6xl mx-auto p-4 lg:px-0 mt-72 lg:mt-24 relative`}
+          className={`${styles.mainpage} max-w-6xl mx-auto p-4 lg:px-0 relative h-full`}
         >
-          <div className="mt-8">
-            <ItemsList searchParams={searchParams} />
-          </div>
+          <ItemsList searchParams={searchParams} />
         </div>
       </Suspense>
     </>
